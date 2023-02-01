@@ -17,32 +17,34 @@ public class SuperManager : ModuleRules
 {
 	public SuperManager(ReadOnlyTargetRules Target) : base(Target)
 	{
-    // 该模块使用的预编译 Header
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+
 		PublicIncludePaths.AddRange(
-			new string[] {
+			new string[]
+			{
 				// ... add public include paths required here ...
 			}
-			);
-				
-		
+		);
+
+
 		PrivateIncludePaths.AddRange(
-			new string[] {
+			new string[]
+			{
+				System.IO.Path.GetFullPath(Target.RelativeEnginePath) + "Source/Editor/Blutility/Private"
 				// ... add other private include paths required here ...
 			}
-			);
-			
-		
+		);
+
+
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", "Blutility"
 				// ... add other public dependencies that you statically link with here ...
 			}
-			);
-			
-		
+		);
+
+
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -52,15 +54,15 @@ public class SuperManager : ModuleRules
 				"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
-			);
-		
-		
+		);
+
+
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]
 			{
 				// ... add any modules that your module loads dynamically here ...
 			}
-			);
+		);
 	}
 }
 ```
@@ -79,13 +81,18 @@ namespace ELoadingPhase
         PostSplashScreen,
         PreEarlyLoadingScreen,
         PreLoadingScreen,
-        PreDefault,								// 在 Game Module 之前
-        Default, 									// 默认加载点（引擎初始化期间，在 Game Module 之后）
+        PreDefault,				// 在 Game Module 之前
+        Default,				// 默认加载点（引擎初始化期间，在 Game Module 之后）
         PostDefault,
         PostEngineInit,
-        None,											// 不自动加载
+        None,					// 不自动加载
         Max,
     }
 }
 ```
 
+Custom editor functionalities 2 type:
+
+Actions to assets
+
+Actions to actors
