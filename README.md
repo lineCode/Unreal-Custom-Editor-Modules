@@ -91,8 +91,45 @@ namespace ELoadingPhase
 }
 ```
 
-Custom editor functionalities 2 type:
+自定义 Editor Function 主要分两类：
 
-Actions to assets
+1. Actions to assets (`UAssetActionUtility : UEditorUtilityObject, IEditorUtilityExtension`)
+2. Actions to actors
 
-Actions to actors
+Scripring Libraries 分为两类：
+
+1. UEditorUtilityLibrary
+2. UEditorAssetLibrary
+
+UEditorUtilityLibrary
+
+```c++
+// Engine\Source\Editor\Blutility\Public\EditorUtilityLibrary.h
+// Gets the set of currently selected assets
+UFUNCTION(BlueprintCallable, Category = "Development|Editor")
+static TArray<UObject*> GetSelectedAssets();
+
+// Gets the set of currently selected classes
+UFUNCTION(BlueprintCallable, Category = "Development|Editor")
+static TArray<UClass*> GetSelectedBlueprintClasses();
+
+// Gets the set of currently selected asset data
+UFUNCTION(BlueprintCallable, Category = "Development|Editor")
+static TArray<FAssetData> GetSelectedAssetData();
+```
+
+UEditorAssetLibrary
+
+```c++
+// Engine\Plugins\Editor\EditorScriptingUtilities\Source\EditorScriptingUtilities\Public\EditorAssetLibrary.h
+
+/**
+ * Return the list of all the assets found in the DirectoryPath.
+ * @param  DirectoryPath     Directory path of the asset we want the list from.
+ * @param  bRecursive       The search will be recursive and will look in sub folders.
+ * @param  bIncludeFolder    The result will include folders name.
+ * @return The list of asset found.
+ */
+UFUNCTION(BlueprintCallable, Category = "Editor Scripting | Asset")
+static TArray<FString> ListAssets(const FString& DirectoryPath, bool bRecursive = true, bool bIncludeFolder = false);
+```
