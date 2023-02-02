@@ -64,6 +64,13 @@ void UQuickAssetAction::AddPrefixes()
 			continue;
 		}
 
+		// 处理材质实例的前后缀
+		if (SelectedObject->IsA<UMaterialInstanceConstant>())
+		{
+			OldName.RemoveFromStart(TEXT("M_"));
+			OldName.RemoveFromEnd(TEXT("_Inst"));
+		}
+
 		const FString NewNameWithPrefix = *PrefixFound + OldName;
 		UEditorUtilityLibrary::RenameAsset(SelectedObject, NewNameWithPrefix);
 

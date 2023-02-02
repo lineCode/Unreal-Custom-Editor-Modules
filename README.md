@@ -168,3 +168,14 @@ TMap<UClass*, FString> PrefixMap =
 	{UNiagaraEmitter			::StaticClass(), TEXT("NE_")}
 };
 ```
+
+使用材质创建 Material Instance 的时候，Unreal 会为其添加 `_Inst` 后缀，而且保留了 `M_` 前缀，所以处理掉 `UMaterialInstanceConstant` 类型的前后缀。
+
+```c++
+if (SelectedObject->IsA<UMaterialInstanceConstant>())
+{
+    OldName.RemoveFromStart(TEXT("M_"));
+    OldName.RemoveFromEnd(TEXT("_Inst"));
+}
+```
+
