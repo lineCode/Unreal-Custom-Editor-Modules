@@ -20,7 +20,6 @@ public class SuperManager : ModuleRules
 			new string[]
 			{
 				System.IO.Path.GetFullPath(Target.RelativeEnginePath) + "Source/Editor/Blutility/Private"
-				// ... add other private include paths required here ...
 			}
 		);
 
@@ -28,8 +27,11 @@ public class SuperManager : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "Blutility", "EditorScriptingUtilities",
-				// ... add other public dependencies that you statically link with here ...
+				"Core", 
+				"Blutility", 
+				"EditorScriptingUtilities", 
+				"UMG",		// Materials
+				"Niagara",	// NiagaraSystem, NiagaraEmitter
 			}
 		);
 
@@ -41,7 +43,6 @@ public class SuperManager : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				// ... add private dependencies that you statically link with here ...	
 			}
 		);
 

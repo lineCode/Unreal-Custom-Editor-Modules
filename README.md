@@ -91,6 +91,8 @@ namespace ELoadingPhase
 }
 ```
 
+### Select
+
 自定义 Editor Function 主要分两类：
 
 1. Actions to assets (`UAssetActionUtility : UEditorUtilityObject, IEditorUtilityExtension`)
@@ -101,7 +103,7 @@ Scripring Libraries 分为两类：
 1. UEditorUtilityLibrary
 2. UEditorAssetLibrary
 
-UEditorUtilityLibrary
+关键方法：
 
 ```c++
 // Engine\Source\Editor\Blutility\Public\EditorUtilityLibrary.h
@@ -118,8 +120,6 @@ UFUNCTION(BlueprintCallable, Category = "Development|Editor")
 static TArray<FAssetData> GetSelectedAssetData();
 ```
 
-UEditorAssetLibrary
-
 ```c++
 // Engine\Plugins\Editor\EditorScriptingUtilities\Source\EditorScriptingUtilities\Public\EditorAssetLibrary.h
 
@@ -132,4 +132,39 @@ UEditorAssetLibrary
  */
 UFUNCTION(BlueprintCallable, Category = "Editor Scripting | Asset")
 static TArray<FString> ListAssets(const FString& DirectoryPath, bool bRecursive = true, bool bIncludeFolder = false);
+```
+
+## Automatically Asset Prefixes
+
+[Recommended Asset Naming Conventions in Unreal Engine projects | Unreal Engine 5.1 Documentation](https://docs.unrealengine.com/5.1/en-US/recommended-asset-naming-conventions-in-unreal-engine-projects/)
+
+关键方法：
+
+```c++
+// Engine\Source\Editor\Blutility\Public\EditorUtilityLibrary.h
+// Renames an asset (cannot move folders)
+UFUNCTION(BlueprintCallable, Category = "Development|Editor")
+static void RenameAsset(UObject* Asset, const FString& NewName);
+```
+
+类型映射表：
+
+```c++
+TMap<UClass*, FString> PrefixMap =
+{
+	{UBlueprint					::StaticClass(), TEXT("BP_")},
+	{UStaticMesh				::StaticClass(), TEXT("SM_")},
+	{UMaterial					::StaticClass(), TEXT("M_")},
+	{UMaterialInstanceConstant	::StaticClass(), TEXT("MI_")},
+	{UMaterialFunctionInterface	::StaticClass(), TEXT("MF_")},
+	{UParticleSystem			::StaticClass(), TEXT("PS_")},
+	{USoundCue					::StaticClass(), TEXT("SC_")},
+	{USoundWave					::StaticClass(), TEXT("SW_")},
+	{UTexture					::StaticClass(), TEXT("T_")},
+	{UTexture2D					::StaticClass(), TEXT("T_")},
+	{UUserWidget				::StaticClass(), TEXT("WBP_")},
+	{USkeletalMeshComponent		::StaticClass(), TEXT("SK_")},
+	{UNiagaraSystem				::StaticClass(), TEXT("NS_")},
+	{UNiagaraEmitter			::StaticClass(), TEXT("NE_")}
+};
 ```
