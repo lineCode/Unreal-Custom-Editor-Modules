@@ -7,6 +7,8 @@
 #include "EditorAssetLibrary.h"
 #include "Misc/MessageDialog.h"
 
+#include "ObjectTools.h" // 使用 ObjectTools 中的删除方法，而不是使用 UEditorAssetLibrary 中的强制删除。
+
 void UQuickAssetAction::DuplicateAssets(int32 NumOfDuplicates)
 {
 	if (NumOfDuplicates <= 0)
@@ -79,3 +81,33 @@ void UQuickAssetAction::AddPrefixes()
 
 	ShowNotifyInfo(TEXT("Successfully renamed " + FString::FromInt(Counter) + " assets"));
 }
+
+void UQuickAssetAction::RemoveUnusedAssets()
+{
+	TArray<FAssetData> SelectedAssetsData = UEditorUtilityLibrary::GetSelectedAssetData();
+	TArray<FAssetData> UnusedAssetsData;
+
+	for (const FAssetData& Data : SelectedAssetsData)
+	{
+		TArray<FString> AssetReferencers =
+		UEditorAssetLibrary::FindPackageReferencersForAsset(Data.GetSoftObjectPath().ToString());
+
+		if (AssetReferencers.Num() == 0)
+		{
+			UnusedAssetsData.Add(Data);
+		}
+	}
+
+	if (UnusedAssetsData.Num() == 0)
+	{
+		ShowMsgDialog(EAppMsgType::Ok, TEXT("No unused asset found among selected assets"), false);
+		return;
+	}
+
+	const int32 NumOfAssetsDeleted = ObjectTools::DeleteAssets(UnusedAssetsData, true);
+
+	if (NumOfAssetsDeleted == 0) return; // 取消了删除操作
+
+	ShowNotifyInfo(TEXT("Successfully deleted ") + FString::FromInt(NumOfAssetsDeleted) + TEXT(" unused assets"));
+}
+
