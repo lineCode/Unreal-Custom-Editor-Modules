@@ -30,9 +30,10 @@ public class SuperManager : ModuleRules
 				"Core", 
 				"Blutility", 
 				"EditorScriptingUtilities", 
-				"UMG",		// Materials
-				"Niagara",	// NiagaraSystem, NiagaraEmitter
-				"UnrealEd",	// ObjectTools
+				"UMG",			// Materials
+				"Niagara",		// NiagaraSystem, NiagaraEmitter
+				"UnrealEd",		// ObjectTools
+				"AssetTools",
 			}
 		);
 
